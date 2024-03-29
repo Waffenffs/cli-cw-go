@@ -7,19 +7,15 @@ import (
 )
 
 func main() {
-	defer os.Exit(0)
-
 	flags := os.Args
-
+	/** There must be at least more than 2 flags/commands */
 	if len(flags) <= 2 {
 		log.Fatal("\nUsage: go <program_name> <command: --c, --l> <file_name>")
 	}
-
 	file, err := os.Open(flags[2])
 	if err != nil {
 		log.Fatal("\nFile does not exist")
 	}
-
 	for _, flag := range flags {
 		switch flag {
 		case "--help":
@@ -30,8 +26,9 @@ func main() {
 			getFileTotalLines(file)
 		}
 	}
-
 	file.Close()
+
+	defer os.Exit(0)
 }
 
 func getFileSize(f *os.File) {
@@ -39,7 +36,6 @@ func getFileSize(f *os.File) {
 	if err != nil {
 		log.Fatal("\nCould not obtain file information")
 	}
-
 	log.Println("\nFile:", os.Args[2], "\nSize:", info.Size())
 }
 
@@ -49,6 +45,5 @@ func getFileTotalLines(f *os.File) {
 	for scanner.Scan() {
 		line++
 	}
-
 	log.Println("Total lines:", line)
 }
